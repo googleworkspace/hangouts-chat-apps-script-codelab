@@ -10,11 +10,11 @@ var header = {
 /**
  * Creates a card-formatted response.
  *
- * @param the message to send
+ * @param widgets the UI components to send
  */
 function createCardResponse(widgets) {
   return {
-    "publicApiCards": [
+    "cards": [
       header,
       {
         "sections": [{
