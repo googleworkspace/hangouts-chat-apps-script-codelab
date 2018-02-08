@@ -1,3 +1,37 @@
+/**
+ * Responds to an ADDED_TO_SPACE event
+ *  in Hangouts Chat.
+ *
+ * @param event the event object from Hangouts Chat
+ * @return JSON-formatted response
+ */
+function onAddToSpace(event) {
+  console.info(event);
+
+  var message = "";
+
+  if (event.space.type === "DM") {
+    message = "Thank you for adding me to a DM, " +
+      event.user.displayName + "!";
+  } else {
+    message = "Thank you for adding me to " +
+      event.space.displayName;
+  }
+
+  return { "text": message };
+}
+
+/**
+ * Responds to a REMOVED_FROM_SPACE event
+ * in Hangouts Chat.
+ *
+ * @param event the event object from Hangouts Chat
+ */
+function onRemoveFromSpace(event) {
+  console.info(event);
+  console.info("Bot removed from ", event.space.name);
+}
+
 var DEFAULT_IMAGE_URL = "https://goo.gl/bMqzYS";
 var header = {
   "header": {
@@ -11,6 +45,7 @@ var header = {
  * Creates a card-formatted response.
  *
  * @param widgets the UI components to send
+ * @return JSON-formatted response
  */
 function createCardResponse(widgets) {
   return {
@@ -31,6 +66,7 @@ var REASON_OTHER = "Out of office";
  * Responds to a MESSAGE event triggered in Hangouts Chat.
  *
  * @param event the event object from Hangouts Chat
+ * @return JSON-formatted response
  */
 function onMessage(event) {
   console.info(event);
@@ -39,87 +75,63 @@ function onMessage(event) {
   var name = event.sender.displayName;
   var userMessage = event.message.text;
 
- // If the user said that they were "sick", adjust the image in the header
-  // sent to them.
+  // If the user said that they were "sick", adjust the image in the
+  // header sent in response.
   if (userMessage.indexOf("sick") > -1) {
-    header.header.imageUrl = "https://goo.gl/mnZ37b"; // Hospital material icon
+
+    // Hospital material icon
+    header.header.imageUrl = "https://goo.gl/mnZ37b";
     reason = REASON_SICK;
+
   } else if (userMessage.indexOf("vacation") > -1) {
-    header.header.imageUrl = "https://goo.gl/EbgHuc"; // Spa material icon
+
+    // Spa material icon
+    header.header.imageUrl = "https://goo.gl/EbgHuc";
   }
 
   var widgets = [{
-            "textParagraph": {
-              "text": "Hello, " + name + ".<br/>Are you taking time off today?"
+      "textParagraph": {
+        "text": "Hello, " + name +
+          ".<br/>Are you taking time off today?"
+      }
+    }, {
+      "buttons": [{
+        "textButton": {
+          "text": "Set vacation in Gmail",
+          "onClick": {
+            "action": {
+              "actionMethodName": "turnOnAutoResponder",
+              "parameters": [{
+                "key": "reason",
+                "value": reason
+              }]
             }
-          }, {
-            "buttons": [{
-              "textButton": {
-                "text": "Set vacation in Gmail",
-                "onClick": {
-                  "action": {
-                    "actionMethodName": "turnOnAutoResponder",
-                    "parameters": [{
-                      "key": "reason",
-                      "value": reason
-                    }]
-                  }
-                }
-              }
-            }, {
-              "textButton": {
-                "text": "Block out day in Calendar",
-                "onClick": {
-                  "action": {
-                    "actionMethodName": "blockOutCalendar",
-                    "parameters": [{
-                      "key": "reason",
-                      "value": reason
-                    }]
-                  }
-                }
-              }
-            }]
-          }];
+          }
+        }
+      }, {
+        "textButton": {
+          "text": "Block out day in Calendar",
+          "onClick": {
+            "action": {
+              "actionMethodName": "blockOutCalendar",
+                "parameters": [{
+                  "key": "reason",
+                  "value": reason
+                }]
+            }
+          }
+        }
+      }]
+  }];
 
   return createCardResponse(widgets);
-}
-
-/**
- * Responds to an ADDED_TO_SPACE event in Hangouts Chat.
- *
- * @param event the event object from Hangouts Chat
- */
-function onAddToSpace(event) {
-  console.info(event);
-
-  var message = "";
-
-  if (event.space.type == "DM") {
-    message = "Thank you for adding me to a DM, " +
-      event.user.displayName + "!";
-  } else {
-    message = "Thank you for adding me to " +
-      event.space.displayName;
-  }
-
-  return { "text": message };
-}
-
-/**
- * Responds to a REMOVED_FROM_SPACE event in Hangouts Chat.
- *
- * @param event the event object from Hangouts Chat
- */
-function onRemoveFromSpace(event) {
-  console.info(event);
-  console.info("Bot removed from ", event.space.name);
 }
 
 /**
  * Responds to a CARD_CLICKED event triggered in Hangouts Chat.
  *
  * @param event the event object from Hangouts Chat
+ * @return JSON-formatted response
  */
 function onCardClick(event) {
   console.info(event);
@@ -144,6 +156,8 @@ var ONE_DAY_MILLIS = 24 * 60 * 60 * 1000;
 
 /**
  * Turns on the user's vacation response for today in Gmail.
+ *
+ * @param reason the reason for vacation, either REASON_SICK or REASON_OTHER
  */
 function turnOnAutoResponder(reason) {
   var currentTime = (new Date()).getTime();
@@ -161,6 +175,8 @@ function turnOnAutoResponder(reason) {
 
 /**
  * Places an all-day meeting on the user's Calendar.
+ *
+ * @param reason the reason for vacation, either REASON_SICK or REASON_OTHER
  */
 function blockOutCalendar(reason) {
   CalendarApp.createEvent(reason, new Date(), new Date(Date.now() + ONE_DAY_MILLIS));
