@@ -72,7 +72,7 @@ function onMessage(event) {
   console.info(event);
 
   var reason = REASON_OTHER;
-  var name = event.sender.displayName;
+  var name = event.user.displayName;
   var userMessage = event.message.text;
 
   // If the user said that they were "sick", adjust the image in the
@@ -177,5 +177,5 @@ function turnOnAutoResponder(reason) {
  * @param reason the reason for vacation, either REASON_SICK or REASON_OTHER
  */
 function blockOutCalendar(reason) {
-  CalendarApp.createEvent(reason, new Date(), new Date(Date.now() + ONE_DAY_MILLIS));
+  CalendarApp.createAllDayEvent(reason, new Date(), new Date(Date.now() + ONE_DAY_MILLIS));
 }
