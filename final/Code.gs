@@ -1,7 +1,7 @@
 /**
  * Responds to an ADDED_TO_SPACE event in Hangouts Chat.
- * @param {Event} event the event object from Hangouts Chat
- * @return JSON-formatted response
+ * @param {object} event the event object from Hangouts Chat
+ * @return {object} JSON-formatted response
  * @see https://developers.google.com/hangouts/chat/reference/message-formats/events
  */
 function onAddToSpace(event) {
@@ -17,7 +17,7 @@ function onAddToSpace(event) {
 
 /**
  * Responds to a REMOVED_FROM_SPACE event in Hangouts Chat.
- * @param {Event} event the event object from Hangouts Chat
+ * @param {object} event the event object from Hangouts Chat
  * @see https://developers.google.com/hangouts/chat/reference/message-formats/events
  */
 function onRemoveFromSpace(event) {
@@ -36,8 +36,8 @@ var HEADER = {
 
 /**
  * Creates a card-formatted response.
- * @param widgets the UI components to send
- * @return {Object} JSON-formatted response
+ * @param {object} widgets the UI components to send
+ * @return {object} JSON-formatted response
  */
 function createCardResponse(widgets) {
   return {
@@ -55,8 +55,8 @@ var REASON = {
 };
 /**
  * Responds to a MESSAGE event triggered in Hangouts Chat.
- * @param event the event object from Hangouts Chat
- * @return {Object} JSON-formatted response
+ * @param {object} event the event object from Hangouts Chat
+ * @return {object} JSON-formatted response
  */
 function onMessage(event) {
   console.info(event);
@@ -113,8 +113,8 @@ function onMessage(event) {
 
 /**
  * Responds to a CARD_CLICKED event triggered in Hangouts Chat.
- * @param {Event} event the event object from Hangouts Chat
- * @return {Object} JSON-formatted response
+ * @param {object} event the event object from Hangouts Chat
+ * @return {object} JSON-formatted response
  * @see https://developers.google.com/hangouts/chat/reference/message-formats/events
  */
 function onCardClick(event) {
