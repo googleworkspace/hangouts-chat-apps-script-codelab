@@ -8,7 +8,7 @@ their Calendar from Hangouts Chat.
 ## Usage
 
 You can follow [this codelab](https://codelabs.developers.google.com/codelabs/chat-apps-script/index.html)
-to build and test this bot.
+to build and test this bot. Extremely simple and easy to use.
 
 To use this bot, you must enable the Hangouts Chat API in the
 [Google API Console](https://console.developers.google.com/). After enabling
