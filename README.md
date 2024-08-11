@@ -1,3 +1,5 @@
+**Important: The content of this repository is outdated, it's now in the GitHub repository [apps-script-samples](https://github.com/googleworkspace/apps-script-samples/tree/main/solutions/attendance-chat-app).**
+
 # Attendance Bot: Hangouts Chat bot with Apps Script codelab
 
 This code sample shows how to build a Hangouts Chat bot using Google
